@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.stackexchange.viewmodelexample.model.NewsModel
+import com.example.stackexchange.viewmodelexample.retrofit.ApiBuilder
 import com.example.stackexchange.viewmodelexample.retrofit.ApiService
 import com.example.stackexchange.viewmodelexample.retrofit.Config
 import com.example.stackexchange.viewmodelexample.retrofit.RetrofitClient
@@ -19,9 +20,7 @@ class NewsRepository {
     fun getNews(){
         val mMapParams: MutableMap<String, Any> = HashMap()
         mMapParams["page"] = 1
-        val retrofit = RetrofitClient.getClient(Config.URL)
-        val apiService = retrofit!!.create(ApiService::class.java)
-        apiService.getAllNews(mMapParams).observeOn(AndroidSchedulers.mainThread())
+        ApiBuilder.getApiService().getAllNews(mMapParams).observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
                 {
