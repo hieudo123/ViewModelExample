@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.stackexchange.viewmodelexample.di.Injector
+import com.example.stackexchange.viewmodelexample.di.component.ActivityComponent
 
 abstract class BaseFragment : Fragment() {
 
@@ -17,6 +19,8 @@ abstract class BaseFragment : Fragment() {
         initView(view)
         return view
     }
+
+    fun  getActivityComponent() : ActivityComponent { return Injector.getActivityComponent()!! }
 
     open fun addFragment(fragment: BaseFragment?, isAddToBackStack: Boolean) {
         if (activity is BaseActivity) {

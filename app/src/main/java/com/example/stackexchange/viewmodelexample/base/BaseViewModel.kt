@@ -5,10 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 open class BaseViewModel : ViewModel() {
-    private var _isLoading : MutableLiveData<Boolean> = MutableLiveData()
-    var isViewLoading : LiveData<Boolean> = _isLoading
+    private var isLoading : MutableLiveData<Boolean> = MutableLiveData()
 
     fun showLoading(isShowLoading : Boolean){
-        this._isLoading.value = isShowLoading
+        this.isLoading.value = isShowLoading
     }
+
+    fun isLoading() = isLoading
 }

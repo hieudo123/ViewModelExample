@@ -11,35 +11,45 @@ import com.example.stackexchange.viewmodelexample.R
 import com.example.stackexchange.viewmodelexample.base.BaseFragment
 import com.example.stackexchange.viewmodelexample.model.NewsModel
 import com.example.stackexchange.viewmodelexample.orthers.adapters.NewsAdapter
+import com.example.stackexchange.viewmodelexample.repository.NewsRepository
 import com.example.stackexchange.viewmodelexample.viewmodel.NewsViewModel
+import com.example.stackexchange.viewmodelexample.viewmodelfactory.NewsViewModelFactory
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_news.*
+import javax.inject.Inject
 
 
 class NewsFragment : BaseFragment() {
+    @Inject
+    lateinit var newsRepository : NewsRepository
 
-    private lateinit var newsViewModel : NewsViewModel
+    private lateinit var newsViewModelFactory : NewsViewModelFactory
+
     private lateinit var newsAdapter : NewsAdapter
-    lateinit var rvNews : ACRecyclerView
+    private lateinit var rvNews : ACRecyclerView
+
+
     override fun getLayoutId(): Int {
         return R.layout.fragment_news
     }
 
     @SuppressLint("CheckResult")
     override fun initView(view: View) {
+        getActivityComponent().inject(this)
         showActionbar(view,"News")
         rvNews = view.findViewById(R.id.fragNews_rvNews)
         setUpNewsViewModel()
     }
 
     private fun setUpNewsViewModel() {
-        newsViewModel = activity.let { ViewModelProviders.of(it!!).get(NewsViewModel::class.java) }
-        newsViewModel.getNews()
-        newsViewModel.newsList.observe(this, Observer {
+        newsViewModelFactory = NewsViewModelFactory(newsRepository)
+        val newsViewModel = activity.let { ViewModelProviders.of(it!!,newsViewModelFactory).get(NewsViewModel::class.java) }
+        newsViewModel.loadNews()
+        newsViewModel.getNewsList().observe(this, Observer {
             setUpRecyclerView(it)
             newsViewModel.showLoading(false)
         })
-        newsViewModel.isViewLoading.observe(this, Observer {
+        newsViewModel.isLoading().observe(this, Observer {
             if (it)
                 showLoading()
             else

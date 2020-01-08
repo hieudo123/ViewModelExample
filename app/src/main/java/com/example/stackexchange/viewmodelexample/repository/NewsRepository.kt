@@ -11,16 +11,17 @@ import com.example.stackexchange.viewmodelexample.retrofit.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.HashMap
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NewsRepository {
-    val _newsList : MutableLiveData<MutableList<NewsModel>> = MutableLiveData()
-    val newsList : LiveData<MutableList<NewsModel>> = _newsList
+class NewsRepository @Inject constructor(private val  apiService: ApiService) {
+    private val _newsList : MutableLiveData<MutableList<NewsModel>> = MutableLiveData()
 
     @SuppressLint("CheckResult")
-    fun getNews(){
+    fun loadNews(){
         val mMapParams: MutableMap<String, Any> = HashMap()
         mMapParams["page"] = 1
-        ApiBuilder.getApiService().getAllNews(mMapParams).observeOn(AndroidSchedulers.mainThread())
+        apiService.getAllNews(mMapParams).observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
                 {
@@ -30,4 +31,7 @@ class NewsRepository {
                 }
             )
     }
+
+    fun getNewsList()= _newsList
+
 }

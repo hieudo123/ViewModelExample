@@ -3,8 +3,11 @@ package com.example.stackexchange.viewmodelexample.base
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stackexchange.viewmodelexample.R
+import com.example.stackexchange.viewmodelexample.di.Injector
+import com.example.stackexchange.viewmodelexample.di.component.ActivityComponent
 import com.example.stackexchange.viewmodelexample.view.MainActivity
 import com.kaopiz.kprogresshud.KProgressHUD
 
@@ -16,11 +19,17 @@ abstract class BaseActivity : AppCompatActivity() {
     protected abstract fun initView()
 
     private var mProgresDialog: KProgressHUD? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Injector.initialize(this)
         setContentView(getLayoutId())
+
+
         initView()
     }
+
+    fun  getActivityComponent() : ActivityComponent { return Injector.getActivityComponent()!! }
 
     fun showLoading(){
         if (mProgresDialog != null)
@@ -66,7 +75,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun addReplaceFragment(fragment: BaseFragment?, isReplace: Boolean, isAddToBackStack: Boolean) {
         val fragmentManager = supportFragmentManager
-        if (fragmentManager != null && fragment != null) {
+        if (fragment != null) {
             val fragmentTransaction =
                 fragmentManager.beginTransaction()
             if (isReplace) fragmentTransaction.replace(

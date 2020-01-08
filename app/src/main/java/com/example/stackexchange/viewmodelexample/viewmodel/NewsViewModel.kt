@@ -1,18 +1,22 @@
 package com.example.stackexchange.viewmodelexample.viewmodel
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.stackexchange.viewmodelexample.base.BaseViewModel
 import com.example.stackexchange.viewmodelexample.model.NewsModel
 import com.example.stackexchange.viewmodelexample.repository.NewsRepository
 
-class NewsViewModel : BaseViewModel() {
+class NewsViewModel (private val newsRepository: NewsRepository) : BaseViewModel() {
 
-    private var newsRepository : NewsRepository = NewsRepository()
-    var newsList : LiveData<MutableList<NewsModel>> = newsRepository.newsList
+    private val newsList : MutableLiveData<MutableList<NewsModel>> = newsRepository.getNewsList()
 
-    fun getNews(){
-        showLoading(true)
-        newsRepository.getNews()
+    init {
+        loadNews()
     }
 
+    fun loadNews(){
+        showLoading(true)
+        newsRepository.loadNews()
+    }
+
+    fun getNewsList() = newsList
 }
