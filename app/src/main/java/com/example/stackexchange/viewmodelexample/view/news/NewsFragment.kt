@@ -16,6 +16,7 @@ import com.example.stackexchange.viewmodelexample.viewmodel.NewsViewModel
 import com.example.stackexchange.viewmodelexample.viewmodelfactory.NewsViewModelFactory
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_news.*
+import java.util.ArrayList
 import javax.inject.Inject
 
 
@@ -27,6 +28,7 @@ class NewsFragment : BaseFragment() {
 
     private lateinit var newsAdapter : NewsAdapter
     private lateinit var rvNews : ACRecyclerView
+    private lateinit var newsData : MutableList<NewsModel>
 
 
     override fun getLayoutId(): Int {
@@ -36,8 +38,10 @@ class NewsFragment : BaseFragment() {
     @SuppressLint("CheckResult")
     override fun initView(view: View) {
         getActivityComponent().inject(this)
-        showActionbar(view,"News")
+        showActionbar(view, "News")
         rvNews = view.findViewById(R.id.fragNews_rvNews)
+        newsData = ArrayList()
+        setUpRecyclerView(newsData)
         setUpNewsViewModel()
     }
 
@@ -45,8 +49,9 @@ class NewsFragment : BaseFragment() {
         newsViewModelFactory = NewsViewModelFactory(newsRepository)
         val newsViewModel = activity.let { ViewModelProviders.of(it!!,newsViewModelFactory).get(NewsViewModel::class.java) }
         newsViewModel.loadNews()
-        newsViewModel.getNewsList().observe(this, Observer {
-            setUpRecyclerView(it)
+        newsViewModel.newsList.observe(this, Observer {
+            newsData.addAll(it)
+            newsAdapter.notifyDataSetChanged()
             newsViewModel.showLoading(false)
         })
         newsViewModel.isLoading().observe(this, Observer {

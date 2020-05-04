@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.stackexchange.viewmodelexample.di.component.ActivityScope
 import com.example.stackexchange.viewmodelexample.retrofit.ApiService
 import com.example.stackexchange.viewmodelexample.retrofit.Config
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -38,7 +39,7 @@ class NetworkModule {
         return Retrofit.Builder()
             .baseUrl(Config.URL)
             .client(httpClient.build())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

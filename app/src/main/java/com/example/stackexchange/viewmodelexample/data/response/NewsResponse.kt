@@ -1,4 +1,4 @@
-package com.example.stackexchange.viewmodelexample.response
+package com.example.stackexchange.viewmodelexample.data.response
 
 import com.example.stackexchange.viewmodelexample.model.NewsModel
 

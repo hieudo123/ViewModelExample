@@ -27,7 +27,7 @@ class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Injector.initialize(this)
-        Injector.getApplicationComponent()!!.inject(this)
+        Injector.getApplicationComponent()?.inject(this)
     }
 
 
