@@ -5,6 +5,7 @@ import android.app.Application
 import com.example.stackexchange.viewmodelexample.base.BaseActivity
 import com.example.stackexchange.viewmodelexample.di.module.ActivityModule
 import com.example.stackexchange.viewmodelexample.di.module.NetworkModule
+import com.example.stackexchange.viewmodelexample.repository.NewsRepository
 import com.example.stackexchange.viewmodelexample.view.news.NewsFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -15,5 +16,6 @@ import javax.inject.Singleton
 interface ActivityComponent {
     fun inject(baseActivity: BaseActivity)
     fun inject(newsFragment: NewsFragment)
+    fun inject(newsRepository: NewsRepository)
 
 }

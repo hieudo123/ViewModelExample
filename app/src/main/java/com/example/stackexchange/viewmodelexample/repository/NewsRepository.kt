@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.stackexchange.viewmodelexample.di.Injector
 import com.example.stackexchange.viewmodelexample.model.NewsModel
 import com.example.stackexchange.viewmodelexample.retrofit.ApiBuilder
 import com.example.stackexchange.viewmodelexample.retrofit.ApiService
@@ -20,6 +21,10 @@ import javax.inject.Singleton
 
 class NewsRepository @Inject constructor(private val  apiService: ApiService) {
     private val _newsList : MutableLiveData<MutableList<NewsModel>> = MutableLiveData()
+
+    init {
+        Injector.getActivityComponent()?.inject(this)
+    }
 
     @SuppressLint("CheckResult")
     fun loadNews(){

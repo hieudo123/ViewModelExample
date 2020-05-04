@@ -21,10 +21,10 @@ import javax.inject.Inject
 
 
 class NewsFragment : BaseFragment() {
+//    @Inject
+//    lateinit var newsRepository : NewsRepository
     @Inject
-    lateinit var newsRepository : NewsRepository
-
-    private lateinit var newsViewModelFactory : NewsViewModelFactory
+    lateinit var newsViewModelFactory : NewsViewModelFactory
 
     private lateinit var newsAdapter : NewsAdapter
     private lateinit var rvNews : ACRecyclerView
@@ -46,7 +46,7 @@ class NewsFragment : BaseFragment() {
     }
 
     private fun setUpNewsViewModel() {
-        newsViewModelFactory = NewsViewModelFactory(newsRepository)
+//        newsViewModelFactory = NewsViewModelFactory(newsRepository)
         val newsViewModel = activity.let { ViewModelProviders.of(it!!,newsViewModelFactory).get(NewsViewModel::class.java) }
         newsViewModel.loadNews()
         newsViewModel.newsList.observe(this, Observer {
